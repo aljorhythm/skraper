@@ -1,0 +1,10 @@
+#!/bin/sh
+
+SCRIPT_NAME=test_unwanted_strings.sh
+SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+sh $SCRIPT_PATH/$SCRIPT_NAME || { echo 'test unwanted strings failed'; exit 1;}
+
+make format-check || { echo 'format failed. run "make format" to format your files.' ; exit 1; }
+make test-nowatch || { echo 'tests failed.' ; exit 1; }
+
+exit 0

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CI=true make test-with-external-nowatch || { echo 'test with external failed'; exit 1; }
+CI=true make build || { echo 'build failed!'; exit 1; }
+CI=true make test-e2e || { echo 'e2e tests failed!'; exit 1; }
+
+exit 0
