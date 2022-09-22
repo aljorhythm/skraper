@@ -1,0 +1,27 @@
+name: deploy to prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    timeout-minutes: 8
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+      - run: make setup
+      - run: make build
+      - uses: amondnet/vercel-action@v20
+        id: deploy
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          working-directory: ./
+          vercel-args: "--prod"
